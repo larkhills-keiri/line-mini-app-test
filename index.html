@@ -32,7 +32,7 @@
 
     <script>
         async function main() {
-            await liff.init({ liffId: "ここに自分のLIFF IDを入れる" });
+            await liff.init({ liffId: "2009381481-5IWU15kU " });
             if (liff.isLoggedIn()) {
                 const profile = await liff.getProfile();
                 document.getElementById("user-info").innerText = "こんにちは、" + profile.displayName + "さん！";
