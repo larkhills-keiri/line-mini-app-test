@@ -37,27 +37,19 @@
                 // 1. LIFFの初期化
                 await liff.init({ liffId: "2009381481-5lWU15kU" });
 
-                // 2. ログイン状態の確認
+                // 判別したIDで初期化
+                await liff.init({ liffId: targetLiffId });
+
                 if (!liff.isLoggedIn()) {
-                    // ログインしていない場合はログイン画面へ（ミニアプリの場合は自動で走りますが念のため）
                     liff.login();
                     return;
                 }
 
-                // 3. プロフィールの取得
                 const profile = await liff.getProfile();
-
-                // 4. 画面への表示
-                const userInfoElement = document.getElementById("user-info");
-                if (profile && profile.displayName) {
-                    userInfoElement.innerText = "こんにちは、" + profile.displayName + "さん！";
-                } else {
-                    userInfoElement.innerText = "プロフィール情報を取得できませんでした。";
-                }
+                document.getElementById("user-info").innerText = "こんにちは、" + profile.displayName + "さん！";
 
             } catch (err) {
-                console.error('LIFF初期化失敗:', err);
-                document.getElementById("user-info").innerText = "エラーが発生しました: " + err.message;
+                document.getElementById("user-info").innerText = "エラー: " + err.message;
             }
         }
         main();
