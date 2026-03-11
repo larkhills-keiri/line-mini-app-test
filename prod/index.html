@@ -4,38 +4,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>マイ・ミニアプリ</title>
+    <title>Larkhills Hotel Demo</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         body {
             font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f7f6;
+            color: #333;
+        }
+
+        .header {
+            background: #06C755;
+            color: white;
+            padding: 20px;
             text-align: center;
-            padding-top: 50px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ddd;
+        }
+
+        .point-box {
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+
+        .point-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #06C755;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
         }
 
         .btn {
             background: #06C755;
             color: white;
-            padding: 10px 20px;
             border: none;
+            padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
+        }
+
+        .btn-pay {
+            background: #007bff;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #status-msg {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
-    <h1>ようこそ！</h1>
-    <p>これはGitHub Pagesで動いているLPです。</p>
-    <div id="user-info">読み込み中...</div>
-    <br>
-    <button class="btn" onclick="liff.closeWindow()">アプリを閉じる</button>
+
+    <div class="header">
+        <h1>Larkhills Hotel</h1>
+        <p>デモ用ミニアプリ</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="user-profile">
+                <img id="user-img" src="" alt="">
+                <div>
+                    <strong id="user-name">読み込み中...</strong>
+                    <div id="user-id" style="font-size: 10px; color: #999;">ID: ----</div>
+                </div>
+            </div>
+            <div class="point-box">
+                <p>現在の保有ポイント</p>
+                <div class="point-value">5,200 pt</div>
+            </div>
+        </div>
+
+        <h3>ルームサービス</h3>
+        <div class="card">
+            <div class="menu-item">
+                <span>季節のフルーツ盛り合わせ</span>
+                <button class="btn" onclick="order('フルーツ')">注文</button>
+            </div>
+            <div class="menu-item">
+                <span>特製ビーフカレー</span>
+                <button class="btn" onclick="order('カレー')">注文</button>
+            </div>
+        </div>
+
+        <h3>お支払い（デモ）</h3>
+        <div class="card">
+            <p>フロントを介さずLINE Payで即時決済</p>
+            <button class="btn btn-pay" onclick="demoPay()">LINE Payで支払う</button>
+        </div>
+
+        <div id="status-msg"></div>
+        <button style="width:100%; margin-top:30px; border:none; background:none; color:#999;"
+            onclick="liff.closeWindow()">アプリを閉じる</button>
+    </div>
 
     <script>
+        // ※ここに各自のLIFF IDを入力
+        // dev用: 2009381481-5lWU15kU
+        // prod用: 2009381485-5UhSxlgv
+        const MY_LIFF_ID = "2009381485-5UhSxlgv";
+
         async function main() {
             try {
-                // 1. LIFFの初期化
-                await liff.init({ liffId: "2009381485-5UhSxIgv" });
+                await liff.init({ liffId: MY_LIFF_ID });
 
                 if (!liff.isLoggedIn()) {
                     liff.login();
@@ -43,12 +155,26 @@
                 }
 
                 const profile = await liff.getProfile();
-                document.getElementById("user-info").innerText = "こんにちは、" + profile.displayName + "さん！";
+                document.getElementById("user-name").innerText = profile.displayName + " 様";
+                document.getElementById("user-img").src = profile.pictureUrl;
+                document.getElementById("user-id").innerText = "LINE-ID: " + profile.userId;
 
             } catch (err) {
-                document.getElementById("user-info").innerText = "エラー: " + err.message;
+                document.getElementById("status-msg").innerText = "エラー: " + err.message;
             }
         }
+
+        function order(item) {
+            alert(item + "の注文を承りました（デモ）\n本来はここでサーバーにデータが飛びます。");
+        }
+
+        function demoPay() {
+            const confirmPay = confirm("LINE Pay決済画面へ遷移しますか？\n（デモのため実際には決済されません）");
+            if (confirmPay) {
+                alert("決済完了。消込処理が自動で行われ、フロントへの通知が飛びます。");
+            }
+        }
+
         main();
     </script>
 </body>
