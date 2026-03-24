@@ -3,143 +3,474 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Larkhills Hotel Demo</title>
+    <!-- LIFF SDK -->
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
     <style>
+        :root {
+            --primary: #06C755;
+            /* LINE Green */
+            --bg-glass: rgba(255, 255, 255, 0.15);
+            --border-glass: rgba(255, 255, 255, 0.2);
+            --text-light: #fefefe;
+        }
+
+        html,
         body {
-            font-family: sans-serif;
+            position: relative;
+            width: 100vw;
+            height: 100vh;
             margin: 0;
             padding: 0;
-            background: #f4f7f6;
-            color: #333;
+            background: #111;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+            /* Prevent native scroll */
         }
 
-        .header {
-            background: #06C755;
-            color: white;
-            padding: 20px;
+        /* Swiper Containers */
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-h {
+            /* Horizontal Swiper (Main Menu) */
+            background-color: #000;
+        }
+
+        .swiper-v {
+            /* Vertical Swiper (Rooms nested inside Slide 3) */
+            background-color: #222;
+        }
+
+        .swiper-slide {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        /* Gradient Overlay for legibility */
+        .swiper-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0.85) 100%);
+            z-index: 1;
+        }
+
+        /* Content Wrapper inside slides */
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            height: 90%;
+            /* Leave room for pagination */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            /* Align content to bottom */
+            padding-bottom: 30px;
+            box-sizing: border-box;
+        }
+
+        .slide-content.centered {
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            padding-bottom: 0;
         }
 
-        .container {
+        /* Typography & UI Elements */
+        h1,
+        h2,
+        h3 {
+            margin: 0 0 10px 0;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0 0 15px 0;
+            color: #ddd;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
             padding: 20px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
+        /* User Profile Row */
         .user-profile {
             display: flex;
             align-items: center;
             gap: 15px;
+            margin-bottom: 10px;
         }
 
         .user-profile img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: #ddd;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .user-info small {
+            color: #aaa;
+            font-size: 12px;
         }
 
         .point-box {
-            text-align: center;
-            border-top: 1px solid #eee;
-            margin-top: 10px;
-            padding-top: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .point-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #06C755;
-        }
-
-        .menu-item {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            align-items: baseline;
+            gap: 5px;
         }
 
+        .point-value span {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        /* Buttons */
         .btn {
-            background: #06C755;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 14px;
+            border-radius: 50px;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            text-align: center;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
         }
 
         .btn-pay {
             background: #007bff;
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
+            color: white;
             margin-top: 10px;
         }
 
-        #status-msg {
+        .btn-ghost {
+            background: transparent;
+            color: #bbb;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-top: 10px;
+        }
+
+        /* Guide Indicators */
+        .swipe-guide {
+            position: absolute;
+            z-index: 10;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 12px;
-            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            animation: pulse 2s infinite;
+            pointer-events: none;
+        }
+
+        .guide-right {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            flex-direction: column;
+        }
+
+        .guide-right::after {
+            content: '→';
+            font-size: 20px;
+        }
+
+        .guide-up {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            flex-direction: column;
+        }
+
+        .guide-up::after {
+            content: '↑';
+            font-size: 20px;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.4;
+                stroke-width: 1px;
+            }
+
+            50% {
+                opacity: 1;
+                stroke-width: 2px;
+            }
+
+            100% {
+                opacity: 0.4;
+                stroke-width: 1px;
+            }
+        }
+
+        /* Swiper Custom Pagination */
+        .swiper-pagination-bullet {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary);
+        }
+
+        #status-msg {
+            font-size: 11px;
+            color: #ff9999;
             text-align: center;
             margin-top: 10px;
+        }
+
+        /* For Google Maps Fake Embed */
+        .map-placeholder {
+            width: 100%;
+            height: 250px;
+            background: url('https://maps.googleapis.com/maps/api/staticmap?center=Tokyo&zoom=14&size=600x300&maptype=roadmap&sensor=false') no-repeat center center/cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            filter: grayscale(30%) brightness(80%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
 
 <body>
 
-    <div class="header">
-        <h1>Larkhills Hotel</h1>
-        <p>デモ用ミニアプリ</p>
-    </div>
+    <!-- Outer Horizontal Swiper (Main Menu Navigation) -->
+    <div class="swiper swiper-h">
+        <div class="swiper-wrapper">
 
-    <div class="container">
-        <div class="card">
-            <div class="user-profile">
-                <img id="user-img" src="" alt="">
-                <div>
-                    <strong id="user-name">読み込み中...</strong>
-                    <div id="user-id" style="font-size: 10px; color: #999;">ID: ----</div>
+            <!-- [Slide 1] Main Image & User Profile -->
+            <div class="swiper-slide" style="background-image: url('images/301_s.JPG');">
+                <div class="swipe-guide guide-right">SWIPE</div>
+                <div class="slide-content centered">
+                    <div style="margin-bottom: 40px;">
+                        <h1 style="font-size: 42px; margin-bottom: 5px;">Larkhills</h1>
+                        <p style="font-size: 18px; letter-spacing: 2px; color: #aaa;">HOTEL & RESORT</p>
+                    </div>
+
+                    <div class="glass-panel" style="text-align: left;">
+                        <div class="user-profile">
+                            <img id="user-img" src="https://via.placeholder.com/60/333/fff?text=..." alt="User">
+                            <div class="user-info">
+                                <strong id="user-name">読み込み中...</strong>
+                                <div id="user-id" style="font-size: 10px; color: rgba(255,255,255,0.5);">ID: ----</div>
+                            </div>
+                        </div>
+                        <div class="point-box">
+                            <p style="margin-bottom: 5px; font-size: 13px;">現在の保有ポイント</p>
+                            <div class="point-value" id="user-points">5,200 <span>pt</span></div>
+                        </div>
+                        <div id="status-msg"></div>
+                    </div>
                 </div>
             </div>
-            <div class="point-box">
-                <p>現在の保有ポイント</p>
-                <div class="point-value">5,200 pt</div>
-            </div>
-        </div>
 
-        <h3>ルームサービス</h3>
-        <div class="card">
-            <div class="menu-item">
-                <span>季節のフルーツ盛り合わせ</span>
-                <button class="btn" onclick="order('フルーツ')">注文</button>
+            <!-- [Slide 2] Location & Access -->
+            <div class="swiper-slide" style="background-image: url('images/207_s.JPG');">
+                <div class="slide-content">
+                    <div class="glass-panel">
+                        <h2>所在地・アクセス</h2>
+                        <div style="width: 100%; height: 250px; border-radius: 12px; overflow: hidden; margin-bottom: 20px;">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1620.0163351989437!2d139.42948259145618!3d35.67664670000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018e154fbbb8cd9%3A0xa196f7c975a646c2!2z44Ob44OG44Or44Ki44Op44Km44OA44Oq44K-44O844OI!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        <p style="margin-bottom: 8px;"><strong>住所:</strong> 〒186-0011<br>東京都国立市谷保6丁目17<br>ホテルアラウダリゾート</p>
+                        <p><strong>TEL:</strong> <a href="tel:042-571-2020" style="color:var(--text-light); text-decoration:none;">042-571-2020</a><br>駐車場: 完備（宿泊者無料）</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=ホテルアラウダリゾート+東京都国立市谷保6丁目17" target="_blank" class="btn btn-primary" style="text-decoration:none;">Google Mapsで開く</a>
+                    </div>
+                </div>
             </div>
-            <div class="menu-item">
-                <span>特製ビーフカレー</span>
-                <button class="btn" onclick="order('カレー')">注文</button>
+
+            <!-- [Slide 3] Rooms - NESTED VERTICAL SWIPER -->
+            <div class="swiper-slide p-0 m-0">
+                <div class="swiper swiper-v">
+                    <div class="swiper-wrapper">
+
+                        <!-- Room 201 -->
+                        <div class="swiper-slide" style="background-image: url('images/201_s.JPG');">
+                            <div class="swipe-guide guide-up">UP</div>
+                            <div class="slide-content">
+                                <h2>Room 201</h2>
+                                <p>木目調の落ち着きあるスーペリア・ツイン。都心の喧騒を忘れるくつろぎの空間を提供します。</p>
+                                <div class="glass-panel">
+                                    <h3 style="font-size: 16px; margin-bottom: 10px;">ルームサービス</h3>
+                                    <div
+                                        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">
+                                        <span>特製ビーフカレー</span>
+                                        <button class="btn btn-primary"
+                                            style="width:auto; padding:8px 20px; font-size:14px;"
+                                            onclick="order('カレー')">注文</button>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span>季節のフルーツ</span>
+                                        <button class="btn btn-primary"
+                                            style="width:auto; padding:8px 20px; font-size:14px;"
+                                            onclick="order('フルーツ')">注文</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Room 202 -->
+                        <div class="swiper-slide" style="background-image: url('images/202_s.JPG');">
+                            <div class="slide-content">
+                                <h2>Room 202</h2>
+                                <p>日差しが降り注ぐデラックス・ダブル。特別な日の滞在に最適な広々とした客室です。</p>
+                                <div class="glass-panel">
+                                    <h3 style="font-size: 16px; margin-bottom: 10px;">お支払い（アプリ決済）</h3>
+                                    <p style="font-size: 13px;">フロントを介さずご自身のスマホからLINE Payで即時決済が可能です。</p>
+                                    <button class="btn btn-pay" onclick="demoPay()">LINE Payで支払う</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Room 203 -->
+                        <div class="swiper-slide" style="background-image: url('images/203_s.JPG');">
+                            <div class="slide-content">
+                                <h2>Room 203</h2>
+                                <p>ご家族向けのファミリースイート。上質なアメニティと広々としたリビングエリア。</p>
+                                <div class="glass-panel">
+                                    <h3 style="font-size: 16px; margin-bottom: 15px;">フロント直通チャット</h3>
+                                    <p style="font-size: 13px;">お困りごとはLINEのトークルームからいつでもスタッフにご連絡いただけます。</p>
+                                    <button class="btn btn-primary"
+                                        onclick="alert('LINE公式アカウントのトークへ遷移します（デモ）')">スタッフに連絡する</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Vertical Pagination -->
+                    <div class="swiper-pagination swiper-pagination-v"></div>
+                </div>
             </div>
-        </div>
 
-        <h3>お支払い（デモ）</h3>
-        <div class="card">
-            <p>フロントを介さずLINE Payで即時決済</p>
-            <button class="btn btn-pay" onclick="demoPay()">LINE Payで支払う</button>
-        </div>
+            <!-- [Slide 4] Campaign & Exit -->
+            <div class="swiper-slide" style="background-image: url('images/409_s.JPG');">
+                <div class="slide-content centered">
+                    <div class="glass-panel" style="margin-bottom: 30px;">
+                        <h2 style="color: #FFD700;">Spring Campaign</h2>
+                        <p>春の特別宿泊プランのご案内。<br>LINEミニアプリからのご予約でポイントが2倍になります。</p>
+                        <button class="btn btn-primary" onclick="alert('キャンペーン詳細ページに遷移します（デモ）')">詳細を見る</button>
+                    </div>
 
-        <div id="status-msg"></div>
-        <button style="width:100%; margin-top:30px; border:none; background:none; color:#999;"
-            onclick="liff.closeWindow()">アプリを閉じる</button>
+                    <button class="btn btn-ghost" onclick="liff.closeWindow()">ミニアプリを閉じる</button>
+                </div>
+            </div>
+
+        </div>
+        <!-- Horizontal Pagination -->
+        <div class="swiper-pagination swiper-pagination-h"></div>
     </div>
 
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <script>
+        /* --------------------------------------
+           1. Swiper.js Initialization
+        -------------------------------------- */
+        // Initialize Horizontal Swiper (Main Menu Pages)
+        const swiperH = new Swiper('.swiper-h', {
+            direction: 'horizontal',
+            spaceBetween: 0,
+            pagination: {
+                el: '.swiper-pagination-h',
+                clickable: true,
+            },
+            // Disable swipe if touching child vertical swiper, 
+            // but Swiper 11 handles nested touch automatically mostly.
+        });
+
+        // Initialize Vertical Swiper (Rooms)
+        const swiperV = new Swiper('.swiper-v', {
+            direction: 'vertical',
+            spaceBetween: 0,
+            nested: true, // Crucial for nested swipers
+            pagination: {
+                el: '.swiper-pagination-v',
+                clickable: true,
+            },
+        });
+
+        /* --------------------------------------
+           2. LIFF SDK Logic & Demo Functions
+        -------------------------------------- */
         // ※ここに各自のLIFF IDを入力
         // dev用: 2009381481-5lWU15kU
         // prod用: 2009381485-5UhSxIgv
@@ -156,7 +487,14 @@
 
                 const profile = await liff.getProfile();
                 document.getElementById("user-name").innerText = profile.displayName + " 様";
-                document.getElementById("user-img").src = profile.pictureUrl;
+
+                // Fallback image handling
+                if (profile.pictureUrl) {
+                    document.getElementById("user-img").src = profile.pictureUrl;
+                } else {
+                    document.getElementById("user-img").src = "https://via.placeholder.com/60/333/fff?text=" + profile.displayName.charAt(0);
+                }
+
                 document.getElementById("user-id").innerText = "LINE-ID: " + profile.userId;
 
             } catch (err) {
@@ -175,6 +513,7 @@
             }
         }
 
+        // 実行開始
         main();
     </script>
 </body>
