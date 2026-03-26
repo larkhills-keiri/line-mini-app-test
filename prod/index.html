@@ -348,7 +348,7 @@
                     <div class="glass-panel">
                         <h2>所在地・アクセス</h2>
                         <div style="width: 100%; height: 250px; border-radius: 12px; overflow: hidden; margin-bottom: 20px;">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1620.0163351989437!2d139.42948259145618!3d35.67664670000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018e154fbbb8cd9%3A0xa196f7c975a646c2!2z44Ob44OG44Or44Ki44Op44Km44OA44Oq44K-44O844OI!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe src="https://maps.google.co.jp/maps?output=embed&q=ホテルアラウダリゾート+東京都国立市谷保6丁目17" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                         <p style="margin-bottom: 8px;"><strong>住所:</strong> 〒186-0011<br>東京都国立市谷保6丁目17<br>ホテルアラウダリゾート</p>
                         <p><strong>TEL:</strong> <a href="tel:042-571-2020" style="color:var(--text-light); text-decoration:none;">042-571-2020</a><br>駐車場: 完備（宿泊者無料）</p>
@@ -420,13 +420,59 @@
                 </div>
             </div>
 
-            <!-- [Slide 4] Campaign & Exit -->
-            <div class="swiper-slide" style="background-image: url('images/409_s.JPG');">
+            <!-- [Slide 4] Campaign - NESTED VERTICAL SWIPER -->
+            <div class="swiper-slide p-0 m-0">
+                <div class="swiper swiper-v-campaign">
+                    <div class="swiper-wrapper">
+                        <!-- Campaign 1: Food -->
+                        <div class="swiper-slide" style="background-image: url('images/campaign_202603_Food.png');">
+                            <div class="swipe-guide guide-up">UP</div>
+                            <div class="slide-content centered">
+                                <div class="glass-panel" style="margin-bottom: 30px;">
+                                    <h2 style="color: #FFD700;">Food Campaign</h2>
+                                    <p style="font-size:13px;">期間限定の特別ディナーコース。</p>
+                                    <button class="btn btn-primary" onclick="alert('詳細ページに遷移します（デモ）')">詳細を見る</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campaign 2: Room -->
+                        <div class="swiper-slide" style="background-image: url('images/campaign_202603_Room.png');">
+                            <div class="slide-content centered">
+                                <div class="glass-panel" style="margin-bottom: 30px;">
+                                    <h2 style="color: #FFD700;">Room Campaign</h2>
+                                    <p style="font-size:13px;">春の宿泊割引キャンペーン実施中。</p>
+                                    <button class="btn btn-primary" onclick="alert('詳細ページに遷移します（デモ）')">詳細を見る</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Vertical Pagination for Campaign -->
+                    <div class="swiper-pagination swiper-pagination-v-campaign"></div>
+                </div>
+            </div>
+
+            <!-- [Slide 5] Survey & Exit -->
+            <div class="swiper-slide" style="background-color: #222;">
                 <div class="slide-content centered">
-                    <div class="glass-panel" style="margin-bottom: 30px;">
-                        <h2 style="color: #FFD700;">Spring Campaign</h2>
-                        <p>春の特別宿泊プランのご案内。<br>LINEミニアプリからのご予約でポイントが2倍になります。</p>
-                        <button class="btn btn-primary" onclick="alert('キャンペーン詳細ページに遷移します（デモ）')">詳細を見る</button>
+                    <div class="glass-panel" style="margin-bottom: 30px; text-align: left;">
+                        <h2>ご宿泊アンケート</h2>
+                        <p style="font-size: 13px;">サービスの向上のため、アンケートにご協力をお願いいたします。回答いただいた方には1000ptプレゼント！</p>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label style="display:block; margin-bottom:5px; font-size:14px; font-weight:bold;">Q1. 今回の滞在はいかがでしたか？</label>
+                            <select style="width:100%; padding:10px; border-radius:8px; border:none; background:rgba(255,255,255,0.8); font-size:14px; margin-bottom:10px; color:#333;">
+                                <option>大変満足</option>
+                                <option>満足</option>
+                                <option>普通</option>
+                                <option>不満</option>
+                            </select>
+
+                            <label style="display:block; margin-bottom:5px; font-size:14px; font-weight:bold; margin-top:10px;">Q2. ご意見・ご感想</label>
+                            <textarea style="width:100%; height:80px; padding:10px; border-radius:8px; border:none; background:rgba(255,255,255,0.8); font-size:14px; color:#333; resize:none;" placeholder="ここに入力..."></textarea>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="alert('アンケートを送信しました（デモ）')">送信する</button>
                     </div>
 
                     <button class="btn btn-ghost" onclick="liff.closeWindow()">ミニアプリを閉じる</button>
@@ -464,6 +510,17 @@
             nested: true, // Crucial for nested swipers
             pagination: {
                 el: '.swiper-pagination-v',
+                clickable: true,
+            },
+        });
+
+        // Initialize Vertical Swiper (Campaign)
+        const swiperVCampaign = new Swiper('.swiper-v-campaign', {
+            direction: 'vertical',
+            spaceBetween: 0,
+            nested: true, // Crucial for nested swipers
+            pagination: {
+                el: '.swiper-pagination-v-campaign',
                 clickable: true,
             },
         });
