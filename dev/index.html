@@ -329,30 +329,31 @@
                 </div>
             </div>
 
-            <!-- [Slide 4] Campaign - NESTED VERTICAL SWIPER -->
-            <div class="swiper-slide p-0 m-0">
+            <!-- [Slide 4] Campaign - NESTED VERTICAL SWIPER (with Zoom) -->
+            <div class="swiper-slide p-0 m-0" style="background-color: #000;">
+                <!-- Swiper にズームモジュールを有効化するため、swiper-zoom-container を用意 -->
                 <div class="swiper swiper-v-campaign">
                     <div class="swiper-wrapper">
                         <!-- Campaign 1: Food -->
-                        <div class="swiper-slide" style="background-image: url('images/campaign_202603_Food.png');">
-                            <div class="swipe-guide guide-up">UP</div>
-                            <div class="slide-content centered">
-                                <div class="glass-panel" style="margin-bottom: 30px;">
-                                    <h2 style="color: #FFD700;">Food Campaign</h2>
-                                    <p style="font-size:13px;">期間限定の特別ディナーコース。</p>
-                                    <button class="btn btn-primary" onclick="alert('詳細ページに遷移します（デモ）')">詳細を見る</button>
-                                </div>
+                        <div class="swiper-slide">
+                            <!-- 画像をズームさせるコンテナ -->
+                            <div class="swiper-zoom-container">
+                                <img src="images/campaign_202603_Food.png" alt="Food Campaign" style="width: 100%; height: auto; max-height: 100vh; object-fit: contain;">
+                            </div>
+                            <div class="swipe-guide guide-up" style="top: 20px; bottom: auto; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">UP</div>
+                            <!-- 詳細リンクボタン（画面下部に小さく固定） -->
+                            <div style="position: absolute; bottom: 40px; left: 0; right: 0; display: flex; justify-content: center; z-index: 10;">
+                                <button class="btn btn-primary" style="width: 200px; padding: 12px; font-size: 14px; background-color: rgba(6, 199, 85, 0.95); box-shadow: 0 4px 15px rgba(0,0,0,0.5);" onclick="alert('Foodキャンペーンの詳細ページに遷移します（デモ）')">詳細を見る</button>
                             </div>
                         </div>
 
                         <!-- Campaign 2: Room -->
-                        <div class="swiper-slide" style="background-image: url('images/campaign_202603_Room.png');">
-                            <div class="slide-content centered">
-                                <div class="glass-panel" style="margin-bottom: 30px;">
-                                    <h2 style="color: #FFD700;">Room Campaign</h2>
-                                    <p style="font-size:13px;">春の宿泊割引キャンペーン実施中。</p>
-                                    <button class="btn btn-primary" onclick="alert('詳細ページに遷移します（デモ）')">詳細を見る</button>
-                                </div>
+                        <div class="swiper-slide">
+                            <div class="swiper-zoom-container">
+                                <img src="images/campaign_202603_Room.png" alt="Room Campaign" style="width: 100%; height: auto; max-height: 100vh; object-fit: contain;">
+                            </div>
+                            <div style="position: absolute; bottom: 40px; left: 0; right: 0; display: flex; justify-content: center; z-index: 10;">
+                                <button class="btn btn-primary" style="width: 200px; padding: 12px; font-size: 14px; background-color: rgba(6, 199, 85, 0.95); box-shadow: 0 4px 15px rgba(0,0,0,0.5);" onclick="alert('Roomキャンペーンの詳細ページに遷移します（デモ）')">詳細を見る</button>
                             </div>
                         </div>
                     </div>
@@ -431,6 +432,9 @@
             pagination: {
                 el: '.swiper-pagination-v-campaign',
                 clickable: true,
+            },
+            zoom: {
+                maxRatio: 3, // ピンチ時の最大ズーム倍率
             },
         });
 
