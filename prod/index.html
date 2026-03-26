@@ -534,11 +534,13 @@
             },
             on: {
                 zoomChange: function (swiper, scale, imageEl, slideEl) {
-                    // ズームしている(等倍より大きい)場合は、親スワイパー(swiperH)の横スワイプを無効化する
+                    // ズームしている(等倍より大きい)場合は、横・縦両方のスワイプ移動を無効化する
                     if (scale > 1) {
-                        swiperH.allowTouchMove = false;
+                        swiperH.allowTouchMove = false; // 親(横スワイパー)
+                        swiper.allowTouchMove = false;  // 自身(縦スワイパー)
                     } else {
                         swiperH.allowTouchMove = true;
+                        swiper.allowTouchMove = true;
                     }
                 }
             }
